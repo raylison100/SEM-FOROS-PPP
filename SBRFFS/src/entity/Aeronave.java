@@ -18,7 +18,7 @@ private final int MED_PRIORITY = 5;
 private final int LOW_PRIORITY = 0;
 
 
-public Aeronave(String pfx,String dpt, float fuel){
+public Aeronave(String pfx,float fuel){
     this.pfx = pfx;
     this.fuel=fuel;
     this.flightPriority();
