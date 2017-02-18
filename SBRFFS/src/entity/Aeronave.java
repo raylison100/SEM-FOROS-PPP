@@ -28,7 +28,7 @@ public void setFlightPriority(int fp){
     this.fp = fp;
 }
 
-public void flightPriority(){                                                       /*A prioridade de vôo vai ser definidade de acordo
+public void flightPriority(){                                                       /*A prioridade de vôo vai ser definida de acordo
                                                                                       com a quantidade de combustivel que a aeronave
                                                                                       carrega*/
     
