@@ -9,29 +9,47 @@ package entity;
  *
  * @author Michel Perilo
  */
-public class Aeronave {
+public class Aeronave extends Thread {
 private String pfx; //prefixo
-private int fp;  //flight priority(meios de estabalecer a prioridade podem ser aperfeiçoados) 
-private String dpt; //departure(para fins de negócios)
+private int fp;  //flight priority 
 private float fuel; //em toneladas 
+private final int MAX_PRIORITY = 10;
+private final int MED_PRIORITY = 5;
+private final int LOW_PRIORITY = 0;
+
 
 public Aeronave(String pfx,String dpt, float fuel){
     this.pfx = pfx;
     this.fuel=fuel;
-    this.dpt=dpt;
+    this.flightPriority();
 }
 
 public int getFlightPriority(){
     return fp;
 }
-public void setFlightPriority(int fp){
+private void setFlightPriority(int fp){
     this.fp = fp;
 }
+private float getFuel(){
+    return fuel;
+}
+public void setFuel(float fuel){
+    this.fuel=fuel; 
+}
+public void decrementFuel(){
+    this.fuel=this.fuel--;
+}
 
-public void flightPriority(){                                                       /*A prioridade de vôo vai ser definida de acordo
+private void flightPriority(){                                                       /*A prioridade de vôo vai ser definida de acordo
                                                                                       com a quantidade de combustivel que a aeronave
                                                                                       carrega*/
-    
+    if (this.getFuel() >= 7){
+        this.setFlightPriority(LOW_PRIORITY);      
+    }else if(this.getFuel() < 7 && this.getFuel() > 3){
+        this.setFlightPriority(MED_PRIORITY);
+    }else if(this.getFuel() <= 3){
+        this.setFlightPriority(MAX_PRIORITY);
+    }
 }
 
 
