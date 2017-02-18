@@ -40,9 +40,9 @@ public void decrementFuel(){
     this.fuel=this.fuel--;
 }
 
-private void flightPriority(){                                                       /*A prioridade de vôo vai ser definida de acordo
-                                                                                      com a quantidade de combustivel que a aeronave
-                                                                                      carrega*/
+private void flightPriority(){                           /*A prioridade de vôo vai ser definida de acordo
+                                                           com a quantidade de combustivel que a aeronave
+                                                           carrega*/
     if (this.getFuel() >= 7){
         this.setFlightPriority(LOW_PRIORITY);      
     }else if(this.getFuel() < 7 && this.getFuel() > 3){
