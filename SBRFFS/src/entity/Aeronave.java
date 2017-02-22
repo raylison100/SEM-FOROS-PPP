@@ -5,6 +5,8 @@
  */
 package entity;
 
+import negocios.BufferAero;
+
 /**
  *
  * @author Michel Perilo

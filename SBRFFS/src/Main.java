@@ -1,6 +1,6 @@
 
 import entity.Aeronave;
-import entity.BufferAero;
+import negocios.BufferAero;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
