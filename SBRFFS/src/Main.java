@@ -16,8 +16,8 @@ public class Main {
     
     public static void main (String[]args) throws InterruptedException{
         BufferAero buffer = new BufferAero();
-        Aeronave a1 = new Aeronave(buffer,"PPT-225\n",5);
-        Aeronave a2 = new Aeronave(buffer,"LZK-123\n",2);
+        Aeronave a1 = new Aeronave(buffer,"PPT-225\n",5,false);
+        Aeronave a2 = new Aeronave(buffer,"LZK-123\n",2,true);
         a1.start();
         a2.start();
         a1.join();
