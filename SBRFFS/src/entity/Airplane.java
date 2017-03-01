@@ -19,7 +19,7 @@ public class Airplane extends Thread {
     */
     //  ? como saber se ta indo pousar o decolar ? 
     
-    private boolean procedure; // se true querendo aterrissar false querendo decolar
+    //private boolean procedure; // se true querendo aterrissar false querendo decolar
                                   //pode ser mudado conforme implementação o taxiamento.
     
     private String pfx; //prefixo
@@ -33,7 +33,7 @@ public class Airplane extends Thread {
     private final int TAKEOFF=1;
     private final int TAXI=2;
     private final int TERMINAL=3;
-    private boolean decolar;
+    //private boolean decolar;
     private int intension; /*a intensao e definida atraves das constantes (LAND, TAXI, TERMINAL e TAKEOFF) por default as aeronaves iniciaram 
                              a variavel intension com 0 (LAND) indicando a intencao de pouso. as intensoes TAXI, TERMINAL e TAKEOFF so sao 
                              utilizadas quando a aeronave estiver em solo, ou seja a variavel ita esta em false. ao final de casa procedimento
@@ -46,11 +46,13 @@ public class Airplane extends Thread {
     public Airplane(BufferAP buf,String pfx,float fuel, boolean status){
         
         this.buffer = buf;
-        this.procedure = status;
+        //this.procedure = status;
         this.pfx = pfx;
         this.fuel=fuel;
         this.intension=LAND;
         this.flightPriority();
+        this.decrementFuel();
+        this.procedure();
     }
 
     public int getFlightPriority(){
@@ -78,11 +80,27 @@ public class Airplane extends Thread {
     }
     
     private void setIntension(int intension){
-        this.intension=intension;
+        switch(intension){
+                case 0: this.intension=LAND;
+                break;
+                case 1: this.intension=TAKEOFF;
+                break;
+                case 2: this.intension=TAXI;
+                break;
+                case 3: this.intension=TERMINAL;
+                break;
+                default: System.out.println("Erro de intensao"); //poderia ser uma excecao
+        }
     }
        
-    public void decrementFuel(){
-        this.fuel=this.fuel--;
+    private void decrementFuel(){            //a decrementacao ficara a cargo da propria classe aeronave, sendo chamado no construtor
+        while (ita==true){
+            this.fuel=this.fuel--;
+        }
+    }
+    
+    private void incrementFuel(){              //rabastecimento: chamado após a aeronave adentrar ao terminal
+        this.fuel=100;
     }
     
     private void flightPriority(){                           /*A prioridade de vôo vai ser definida de acordo
@@ -98,6 +116,20 @@ public class Airplane extends Thread {
             this.setFlightPriority(MAX_PRIORITY);
         }
         
+    }
+    
+    private void procedure(){
+        switch (intension){
+            case 0: // solicitacao de aterrisagem ao controle
+            break;
+            case 1: // solicitacao de decolagem ao controle
+            break; 
+            case 2: //solicitacao de taxiamento ao controle
+            break;
+            case 3: //solicitacao de ancoragem no terminal
+            break;
+            default: System.out.println("Erro de intencao"); //pode ser uma excecao
+        }
     }
     
     
