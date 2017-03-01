@@ -24,7 +24,7 @@ public class Airplane extends Thread {
     
     private String pfx; //prefixo
     private int fp;  //flight priority 
-    private float fuel; //em toneladas 
+    private int fuel; //em toneladas 
     private boolean ita=true; //in the air
     private final int MAX_PRIORITY = 10;
     private final int MED_PRIORITY = 5;
@@ -43,7 +43,7 @@ public class Airplane extends Thread {
 
       
 
-    public Airplane(BufferAP buf,String pfx,float fuel, boolean status){
+    public Airplane(BufferAP buf,String pfx,int fuel, boolean status){
         
         this.buffer = buf;
         //this.procedure = status;
@@ -63,7 +63,7 @@ public class Airplane extends Thread {
         this.fp = fp;
     }
     
-    private float getFuel(){
+    private int getFuel(){
         return fuel;
     }
     
