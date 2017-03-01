@@ -9,10 +9,10 @@ package negocios;
  *
  * @author Michel Perilo
  */
-public class BufferAero {
+public class BufferAP {
     private StringBuffer buffer;
 
-	public BufferAero() {
+	public BufferAP() {
 		buffer = new StringBuffer();
 	}
 

@@ -9,7 +9,16 @@ package entity;
  *
  * @author Raylison
  */
-public class PistaDeVoo {
+public class RunWay {
+    private boolean freerunway=true;          //true para disponivel, false para nao disponivel
+    
+    private boolean getFreeRunWay(){
+        return this.freerunway;
+    }
+    
+    private void setFreeRunWay(boolean freerunway){
+        this.freerunway=freerunway;
+    }
     
   
     // informa a torre de controle se esta ocupada ou nao , dispara um tempo de uso para taxiamento.
@@ -17,6 +26,4 @@ public class PistaDeVoo {
     //recebe as filas de taxiamento diacordo com as prioridades.
     
     
-   
-    
-}
+  }

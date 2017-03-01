@@ -9,11 +9,14 @@ package entity;
  *
  * @author Raylison
  */
-public class TorreDeControle {
+public class Terminal {
+    private final int CAPACIDADE=15;     //capacidade de aeronaves dispotas no terminal
     
     
     
-    // criar filas para aterrissagem, decolagem , taxiamento(decolagem), taxiamento(aterrissagem). 
     
+    
+    
+    //recebe os avioes de taxiamento de aterrissagem e envia os avioes para o taxiamento de decolagem.
     
 }

@@ -9,9 +9,11 @@ package entity;
  *
  * @author Raylison
  */
-public class Garagem {
+public class Control {
     
     
-    //recebe os avioes de taxiamento de aterrissagem e envia os avioes para o taxiamento de decolagem.
+    
+    // criar filas para aterrissagem, decolagem , taxiamento(decolagem), taxiamento(aterrissagem). 
+    
     
 }
