@@ -5,7 +5,8 @@
  */
 package entity;
 
-import negocios.BufferAP;
+import buffer.BufferAP;
+import java.util.concurrent.Semaphore;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Airplane extends Thread {
     
     //private boolean procedure; // se true querendo aterrissar false querendo decolar
                                   //pode ser mudado conforme implementação o taxiamento.
-    
+  
     private String pfx; //prefixo
     private int fp;  //flight priority 
     private int fuel; //em toneladas 
@@ -39,17 +40,18 @@ public class Airplane extends Thread {
                              utilizadas quando a aeronave estiver em solo, ou seja a variavel ita esta em false. ao final de casa procedimento
                              a variavel intension e setada com a nova intensao da aeronave seguindo a sequencia(LAND,TAXI E TERMINAL e TERMINAL
                              TAXI E TAKEOFF)*/
-    
+    private Semaphore semaforo;
 
       
 
-    public Airplane(BufferAP buf,String pfx,int fuel, boolean status){
+    public Airplane(BufferAP buf,String pfx,int fuel, boolean status, Semaphore semaforo){
         
         this.buffer = buf;
         //this.procedure = status;
         this.pfx = pfx;
         this.fuel=fuel;
         this.intension=LAND;
+        this.semaforo=semaforo;
         this.flightPriority();
         this.decrementFuel();
         this.procedure();
@@ -67,19 +69,19 @@ public class Airplane extends Thread {
         return fuel;
     }
     
-    private boolean getITA(){
+    public boolean getITA(){
         return ita;
     }
     
-    private void setITA(boolean ita){
+    public void setITA(boolean ita){
         this.ita=ita;
     }
     
-    private int getIntension(){
+    public int getIntension(){
         return intension;
     }
     
-    private void setIntension(int intension){
+    public void setIntension(int intension){
         switch(intension){
                 case 0: this.intension=LAND;
                 break;
@@ -119,20 +121,57 @@ public class Airplane extends Thread {
     }
     
     private void procedure(){
+        while(true){
         switch (intension){
-            case 0: // solicitacao de aterrisagem ao controle
+            case 0: 
+                this.pousar(); // solicitacao de aterrisagem ao controle
             break;
-            case 1: // solicitacao de decolagem ao controle
+            case 1:
+                this.decolar(); // solicitacao de decolagem ao controle
             break; 
-            case 2: //solicitacao de taxiamento ao controle
+            case 2: 
+                this.taxi(); //solicitacao de taxiamento ao controle
             break;
-            case 3: //solicitacao de ancoragem no terminal
+            case 3:
+                this.terminal(); //solicitacao de ancoragem no terminal
             break;
             default: System.out.println("Erro de intencao"); //pode ser uma excecao
         }
+        }
     }
     
+    public void pousar(){
+        
+       System.out.println("Aeronave " + this.pfx + " preparando-se para aterrissagem...");
+       this.setIntension(0);
+    }
     
+    public void decolar(){
+        
+        System.out.println("Aeronave " + this.pfx + " está decolando!");
+        this.setIntension(1);
+    }
+    
+    public void taxi(){
+       
+        System.out.println("Aeronave " + this.pfx + " irá taxiar.");
+        this.setIntension(2);
+    }
+    
+    public void terminal(){
+    
+        System.out.println("Aeronave " + this.pfx + " solicitando acesso ao terminal...");
+        this.setIntension(3);
+    }
+    
+    /*public void status(){
+        
+        if(this.procedure == true)
+            pousar();
+        else
+            decolar();
+                      
+    }   */ 
     
     public synchronized void run() {
 		for (int i = 0; i < 10; i++)
@@ -140,32 +179,6 @@ public class Airplane extends Thread {
 	}
     
     
-    /*public void pousar(){
-        
-        this.aterrissagem = false;
-        do{
-            // se pista liberada pousou recebe true 
-            // se pista ocupada ou alguem na frete int continua taxiando e 
-            // chama procedimento decrementFuel()
-            
-        }while(this.aterrissagem =! true);
-        
-    }
-    
-    public void decolar(){
-        
-        this.decolar = false;
-        
-    }
-    
-    
-    public void status(){
-        
-        if(this.procedure == true)
-            pousar();
-        else
-            decolar();
-                      
-    }   */
+   
     
 }

@@ -9,16 +9,14 @@ package entity;
  *
  * @author Michel Perilo
  */
-public class Airport {
+ class Airport {
+     /*
     private Control control;
-   // private Terminal terminal;
-    //private RunWay runway;
     private static Airport instance;
     
     public Airport(){
         control = new Control();
-        //terminal = new Terminal();
-        //runway = new RunWay();
+        this.sensorThreads();
     }
     
     public static Airport getInstance(){ //Singleton
@@ -28,21 +26,12 @@ public class Airport {
         return instance;          
     }
     
-    /*public static intensionControl(int intension, Airplane airplane){
-        switch(intension){
-                case 0: 
-                break;
-                case 1: CHAMADA AO MÉTODO DECOLAR
-                break;
-                case 2: CHAMADA AO MÉTODO TÁXIAR
-                break;
-                case 3: CHAMADA AO MÉTODO DE ACESSAR O PORTÃO
-                break;
-                default: System.out.println("Erro de intensao"); //poderia ser uma excecao
-        }
-    }
-    */
+    public void sensorThreads(){
+
     
+    }
+    
+*/    
     
     
     
