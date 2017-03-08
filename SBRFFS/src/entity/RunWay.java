@@ -17,12 +17,12 @@ public class RunWay {
         
     }
     
-    public static RunWay getInstance(){ //Singleton
+    /*public static RunWay getInstance(){ //Singleton
         if (instance == null) {
             instance = new RunWay();
         }
         return instance;          
-    }
+    }*/
     
     private boolean getFreeRunWay(){
         return this.freerunway;

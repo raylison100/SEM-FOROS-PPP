@@ -19,12 +19,12 @@ public class Control {
         terminal = new Terminal();
     }
     
-    public static Control getInstance(){ //Singleton
+    /*public static Control getInstance(){ //Singleton
         if (instance == null) {
             instance = new Control();
         }
         return instance;          
-    }
+    }*/
     
     
     

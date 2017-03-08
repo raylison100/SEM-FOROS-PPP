@@ -17,12 +17,12 @@ public class Terminal {
         
     }
     
-    public static Terminal getInstance(){ //Singleton
+    /*public static Terminal getInstance(){ //Singleton
         if (instance == null) {
             instance = new Terminal();
         }
         return instance;          
-    }
+    }*/
     
     
     
