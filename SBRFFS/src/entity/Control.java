@@ -10,6 +10,22 @@ package entity;
  * @author Raylison
  */
 public class Control {
+    private static Control instance;
+    private RunWay runway;
+    private Terminal terminal;
+    
+    public Control(){
+        runway = new RunWay();
+        terminal = new Terminal();
+    }
+    
+    public static Control getInstance(){ //Singleton
+        if (instance == null) {
+            instance = new Control();
+        }
+        return instance;          
+    }
+    
     
     
     

@@ -11,6 +11,18 @@ package entity;
  */
 public class RunWay {
     private boolean freerunway=true;          //true para disponivel, false para nao disponivel
+    private static RunWay instance;
+    
+    public RunWay(){
+        
+    }
+    
+    public static RunWay getInstance(){ //Singleton
+        if (instance == null) {
+            instance = new RunWay();
+        }
+        return instance;          
+    }
     
     private boolean getFreeRunWay(){
         return this.freerunway;

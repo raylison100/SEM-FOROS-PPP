@@ -11,6 +11,18 @@ package entity;
  */
 public class Terminal {
     private final int CAPACIDADE=15;     //capacidade de aeronaves dispotas no terminal
+    private static Terminal instance;
+    
+    public Terminal(){
+        
+    }
+    
+    public static Terminal getInstance(){ //Singleton
+        if (instance == null) {
+            instance = new Terminal();
+        }
+        return instance;          
+    }
     
     
     
