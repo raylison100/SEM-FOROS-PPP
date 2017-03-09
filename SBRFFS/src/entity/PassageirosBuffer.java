@@ -28,9 +28,10 @@ public class PassageirosBuffer {
         notifyAll();
     }
  
-    public synchronized int get(String id, int val) {
-        val = (int)(Math.random() * 50) + 50;
-        while (val > conteudo) {
+    public synchronized int get(String id) {
+        int val = (int)(Math.random() * 50) + 50;
+        int x = val;
+        while (x > conteudo) {
             try {
                 System.out.println(id + ": Passageiros embarcando...");
                 wait();

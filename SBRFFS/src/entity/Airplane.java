@@ -83,29 +83,21 @@ public class Airplane extends Thread {
     public int getIntension(){
         return intension;
     }
-    
-    public void embarque(){
-        for (int i = 0; i < 50 + ((int)(Math.random() * 25) + 25); i++) {
-            buffer.get(pfx, passengers);
-        }
-    }
-    
-    public void desembarque(){
-        //for (int i = 0; i < 100; i++) {
-            buffer.set(pfx, passengers);
         
-    }
-    
     public void setIntension(int intension){
         switch(intension){
-                case 0: this.intension=LAND;
-                break;
-                case 1: this.intension=TAKEOFF;
-                break;
-                case 2: this.intension=TAXI;
-                break;
-                case 3: this.intension=TERMINAL;
-                break;
+                case 0: 
+                    this.intension=LAND;
+                    break;
+                case 1: 
+                    this.intension=TAKEOFF;
+                    break;
+                case 2: 
+                    this.intension=TAXI;
+                    break;
+                case 3: 
+                    this.intension=TERMINAL;
+                    break;
                 default:  //poderia ser uma excecao
         }
     }
@@ -120,9 +112,9 @@ public class Airplane extends Thread {
         this.fuel=100;
     }
     
-    private void flightPriority(){                           /*A prioridade de vôo vai ser definida de acordo
+    /*private void flightPriority(){                           /*A prioridade de vôo vai ser definida de acordo
                                                            com a quantidade de combustivel que a aeronave
-                                                           carrega*/
+                                                           carrega
         if (this.getFuel() >= 7){
             this.setFlightPriority(LOW_PRIORITY);      
         }
@@ -134,6 +126,7 @@ public class Airplane extends Thread {
         }
         
     }
+    */
     
     private void procedure(){
         while(true){
@@ -153,6 +146,18 @@ public class Airplane extends Thread {
             default: 
         }
         }
+    }
+    
+    public void embarque(){
+       // for (int i = 0; i < 50 + ((int)(Math.random() * 25) + 25); i++) {
+            buffer.get(pfx);
+        }
+    
+    
+    public void desembarque(){
+        //for (int i = 0; i < 100; i++) {
+            buffer.set(pfx, passengers);
+        
     }
     
     public void pousar(){
@@ -198,16 +203,16 @@ public class Airplane extends Thread {
         switch (intension){
             case 0: 
                 this.pousar(); // solicitacao de aterrisagem ao controle
-            break;
+                break;
             case 1:
                 this.decolar(); // solicitacao de decolagem ao controle
-            break; 
+                break; 
             case 2: 
                 this.taxi(); //solicitacao de taxiamento ao controle
-            break;
+                break;
             case 3:
                 this.terminal(); //solicitacao de ancoragem no terminal
-            break;
+                break;
             default: 
         }
 	}

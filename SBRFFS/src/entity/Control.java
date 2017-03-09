@@ -80,6 +80,7 @@ public class Control extends Thread {
                         System.out.println("Controle: " + airplane.getPfx() + " Pista liberada, proceda com a decolagem, boa viagem.");
                         System.out.println(airplane.getPfx() + ": Ok, controle. Obrigado.");
                         semaforoDeco.release();
+                        System.out.println("Controle: " + airplane.getPfx() + " Até a próxima!\n");
                         try {
                             airplane.sleep(15);
                         } catch (InterruptedException ex) {
@@ -88,6 +89,7 @@ public class Control extends Thread {
                             airplane.setITA(true);
                             airplane.setIntension(4);
                             airplane.stop();
+                            
                         }
                     }
   
@@ -116,6 +118,19 @@ public class Control extends Thread {
                 }finally{
                     System.out.println("Controle: " + airplane.getPfx() + " ancoragem liberada, siga para a posição " + (int)(Math.random() * 24) + " do terminal.");
                     System.out.println(airplane.getPfx() + ": procedendo com a ancoragem.");
+                try {
+                    airplane.sleep((int)(Math.random() * 20));
+                    airplane.desembarque();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    airplane.sleep((int)(Math.random() * 50));
+                    airplane.embarque();
+                } catch (InterruptedException ex) {
+                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                   
                     semaforoTerm.release();
                     try {
                         airplane.sleep((int)(Math.random() * 20) + 30);

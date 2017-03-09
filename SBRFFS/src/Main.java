@@ -2,6 +2,7 @@
 import entity.Airplane;
 import entity.PassageirosBuffer;
 import java.util.concurrent.Semaphore;
+import java.util.Random;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,13 +16,23 @@ import java.util.concurrent.Semaphore;
  */
 public class Main {
     
+    public static String geraPfx(){
+       // String pfx;
+        int c1, c2, c3;
+        c1 = (int)(65 + (Math.random() * 25));
+        c2 = (int)(65 + (Math.random() * 25));
+        c3 = (int)(65 + (Math.random() * 25));
+        String pfx = (char)c1 + (char)c2 + (char)c3 + "-" + (char)((Math.random() * 10) + 48) + (char)((Math.random() * 10) + 48) + (char)((Math.random() * 10) + 48);
+        return pfx;
+    }
+    
     public static void main (String[]args) throws InterruptedException{
         //BufferAP buffer = new BufferAP();
         PassageirosBuffer buf = new PassageirosBuffer();
         Semaphore sem1 = new Semaphore(100);
         Semaphore sem2 = new Semaphore(100);
         Semaphore sem3 = new Semaphore(100);
-        (new Airplane("PPT-226", buf, sem1, sem2, sem3)).start();
+        (new Airplane(geraPfx(), buf, sem1, sem2, sem3)).start();
         Airplane a1 = new Airplane("PPT-225", buf, sem1, sem2, sem3);
         Airplane a2 = new Airplane("LZK-123", buf, sem1, sem2, sem3);
         Airplane a3 = new Airplane("KKK-245", buf, sem1, sem2, sem3);
