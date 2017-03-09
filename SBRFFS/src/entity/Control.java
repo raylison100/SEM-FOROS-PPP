@@ -6,6 +6,8 @@
 package entity;
 
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,15 +15,15 @@ import java.util.concurrent.Semaphore;
  */
 public class Control extends Thread {
     private static Control instance;
-    private RunWay runway;
-    private Terminal terminal;
-    private Semaphore semaforo;
-    private static int MAX=100;
+    private Semaphore semaforoPous;
+    private Semaphore semaforoDeco;
+    private Semaphore semaforoTerm;
+    private static int MAX=1;
     
     public Control(){
-        runway = new RunWay();
-        terminal = new Terminal();
-        semaforo = new Semaphore(MAX,true); 
+        semaforoPous = new Semaphore(MAX);
+        semaforoDeco = new Semaphore(MAX);
+        semaforoTerm = new Semaphore(3);
     }
     
      public static Control getInstance(){ //Singleton
@@ -40,47 +42,91 @@ public class Control extends Thread {
         
     }
     
-    private void controleAr(Airplane airplane){
-        if(airplane.getIntension() == 0){
-            
+    public void controleAr(Airplane airplane){
+        if(airplane.getIntension() == 0){ // solicita pouso
+            System.out.println("Controle: " + airplane.getPfx() + " Aguarde liberação.");
+            try {
+                semaforoPous.acquire();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                System.out.println("Controle: " + airplane.getPfx() + " Liberação confirmada, inicie procedimento de aterrissagem.");
+                System.out.println(airplane.getPfx() + ": Ok, controle.");
+                semaforoPous.release();
+                try {
+                    airplane.sleep(10);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                }finally{
+                    airplane.setITA(false);
+                    airplane.setDir(1); // indica que acabou de pousar
+                    airplane.setIntension(2); // taxiar
+                }
+                }
         }else{
-            
+            //DEFAULT
         }
-        
-        
-        
     }
     
-    private void controleSolo(Airplane airplane){
+    public void controleSolo(Airplane airplane){
         switch (airplane.getIntension()){
-            case 1:
-                
-            case 2:
-                
-            case 3:
+            case 1: // decolagem
+                    System.out.println("Controle: " + airplane.getPfx() + " Aguarde liberação.");
+                    try {
+                        semaforoDeco.acquire();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                    }finally{
+                        System.out.println("Controle: " + airplane.getPfx() + " Pista liberada, proceda com a decolagem, boa viagem.");
+                        System.out.println(airplane.getPfx() + ": Ok, controle. Obrigado.");
+                        semaforoDeco.release();
+                        try {
+                            airplane.sleep(15);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                        }finally{
+                            airplane.setITA(true);
+                            airplane.setIntension(4);
+                            airplane.stop();
+                        }
+                    }
+  
+            case 2: // taxiamento
+                System.out.println("Controle: " + airplane.getPfx() + " Verificando Disponibilidade...");
+                System.out.println("Controle: " + airplane.getPfx() + " Tudo certo, posicione a aeronave para taxiamento.");
+                System.out.println(airplane.getPfx() + ": OK, iniciando manobra.");
+                try { 
+                    airplane.sleep(15);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                }finally{
+                    if(airplane.getDir() == 1){
+                        airplane.setIntension(3);
+                    } else{
+                        airplane.setIntension(1);
+                    }
+                }
+  
+            case 3: //terminal
+                System.out.println("Controle: " + airplane.getPfx() + " aguarde liberação.");
+                try {
+                    semaforoTerm.acquire();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                }finally{
+                    System.out.println("Controle: " + airplane.getPfx() + " ancoragem liberada, siga para a posição " + (int)(Math.random() * 24) + " do terminal.");
+                    System.out.println(airplane.getPfx() + ": procedendo com a ancoragem.");
+                    semaforoTerm.release();
+                    try {
+                        airplane.sleep((int)(Math.random() * 20) + 30);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+                    }finally{
+                        airplane.setIntension(1);
+                    }
+                }
         }
     }
-    
-    
-    
-    
-    
-    
-   
-    
-    
-    
-    /*public static Control getInstance(){ //Singleton
-        if (instance == null) {
-            instance = new Control();
-        }
-        return instance;          
-    }*/
-    
-    
-    
-    
-    // criar filas para aterrissagem, decolagem , taxiamento(decolagem), taxiamento(aterrissagem). 
     
     
 }

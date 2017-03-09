@@ -5,7 +5,6 @@
  */
 package entity;
 
-import buffer.BufferAP;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -13,52 +12,56 @@ import java.util.concurrent.Semaphore;
  * @author Michel Perilo
  */
 public class Airplane extends Thread {
-    private BufferAP buffer;
-    /*private boolean decolagem; // true decolou,false pista nao liberada. 
-    private boolean aterrissagem; // true pousou , false taxiando.
-    variaveis podem ser substituidas pela variavel intheair, que indica se a aeronave esta em solo ou nao
-    */
-    //  ? como saber se ta indo pousar o decolar ? 
     
-    //private boolean procedure; // se true querendo aterrissar false querendo decolar
-                                  //pode ser mudado conforme implementação o taxiamento.
-  
     private String pfx; //prefixo
     private int fp;  //flight priority 
     private int fuel; //em toneladas 
     private boolean ita=true; //in the air
-    private final int MAX_PRIORITY = 10;
-    private final int MED_PRIORITY = 5;
-    private final int LOW_PRIORITY = 0;
+    private int dir; //1 para chegada e 0 para saída
+    //private final int MAX_PRIORITY = 10;
+    //private final int MED_PRIORITY = 5;
+    //private final int LOW_PRIORITY = 0;
     private final int LAND=0;  
     private final int TAKEOFF=1;
     private final int TAXI=2;
     private final int TERMINAL=3;
-    //private boolean decolar;
+    private int passengers;
+    private PassageirosBuffer buffer;
     private int intension; /*a intensao e definida atraves das constantes (LAND, TAXI, TERMINAL e TAKEOFF) por default as aeronaves iniciaram 
                              a variavel intension com 0 (LAND) indicando a intencao de pouso. as intensoes TAXI, TERMINAL e TAKEOFF so sao 
                              utilizadas quando a aeronave estiver em solo, ou seja a variavel ita esta em false. ao final de casa procedimento
                              a variavel intension e setada com a nova intensao da aeronave seguindo a sequencia(LAND,TAXI E TERMINAL e TERMINAL
                              TAXI E TAKEOFF)*/
-    private Semaphore semaforo;
+    private Semaphore sem1;
+    private Semaphore sem2;
+    private Semaphore sem3;
 
       
 
-    public Airplane(BufferAP buf,String pfx,int fuel, boolean status, Semaphore semaforo){
+    public Airplane(String pfx, PassageirosBuffer buf, Semaphore sem1, Semaphore sem2, Semaphore sem3){
         
         this.buffer = buf;
-        //this.procedure = status;
         this.pfx = pfx;
-        this.fuel=fuel;
+        this.passengers = (int)(Math.random() * 50) + 50;
         this.intension=LAND;
-        this.semaforo=semaforo;
-        this.flightPriority();
-        this.decrementFuel();
-        this.procedure();
+        this.sem1=sem1;
+        this.sem2=sem2;
+        this.sem3=sem3;
+    }
+    public String getPfx(){
+        return this.pfx;
     }
 
     public int getFlightPriority(){
         return fp;
+    }
+    
+    public int getDir(){
+        return dir;
+    }
+ 
+    public void setDir(int dir){
+        this.dir = dir;
     }
     
     private void setFlightPriority(int fp){
@@ -81,6 +84,18 @@ public class Airplane extends Thread {
         return intension;
     }
     
+    public void embarque(){
+        for (int i = 0; i < 50 + ((int)(Math.random() * 25) + 25); i++) {
+            buffer.get(pfx, passengers);
+        }
+    }
+    
+    public void desembarque(){
+        //for (int i = 0; i < 100; i++) {
+            buffer.set(pfx, passengers);
+        
+    }
+    
     public void setIntension(int intension){
         switch(intension){
                 case 0: this.intension=LAND;
@@ -91,7 +106,7 @@ public class Airplane extends Thread {
                 break;
                 case 3: this.intension=TERMINAL;
                 break;
-                default: System.out.println("Erro de intensao"); //poderia ser uma excecao
+                default:  //poderia ser uma excecao
         }
     }
        
@@ -135,33 +150,32 @@ public class Airplane extends Thread {
             case 3:
                 this.terminal(); //solicitacao de ancoragem no terminal
             break;
-            default: System.out.println("Erro de intencao"); //pode ser uma excecao
+            default: 
         }
         }
     }
     
     public void pousar(){
         
-       System.out.println("Aeronave " + this.pfx + " preparando-se para aterrissagem...");
-       this.setIntension(0);
+       System.out.println(this.pfx + ": Solicito vetor de aproximação...");
+       Control.getInstance().controleAr(this);
+      
     }
     
     public void decolar(){
+        System.out.println(this.pfx + ": Tudo pronto, solicito liberação de pista para de decolagem");
+        Control.getInstance().controleSolo(this);
         
-        System.out.println("Aeronave " + this.pfx + " está decolando!");
-        this.setIntension(1);
     }
     
     public void taxi(){
-       
-        System.out.println("Aeronave " + this.pfx + " irá taxiar.");
-        this.setIntension(2);
+        System.out.println(this.pfx + ": Queremos liberação para pista de taxi");
+       Control.getInstance().controleSolo(this);
     }
     
     public void terminal(){
-    
-        System.out.println("Aeronave " + this.pfx + " solicitando acesso ao terminal...");
-        this.setIntension(3);
+        System.out.println(this.pfx + ": Solicito posição para atracagem");
+        Control.getInstance().controleSolo(this);
     }
     
     /*public void status(){
@@ -173,12 +187,32 @@ public class Airplane extends Thread {
                       
     }   */ 
     
-    public synchronized void run() {
-		for (int i = 0; i < 10; i++)
+    public void run() {
+		/*for (int i = 0; i < 10; i++)
 			buffer.add(pfx);
+                  */      
+        //this.flightPriority();
+        //this.decrementFuel();
+        //procedure();
+        while(true){
+        switch (intension){
+            case 0: 
+                this.pousar(); // solicitacao de aterrisagem ao controle
+            break;
+            case 1:
+                this.decolar(); // solicitacao de decolagem ao controle
+            break; 
+            case 2: 
+                this.taxi(); //solicitacao de taxiamento ao controle
+            break;
+            case 3:
+                this.terminal(); //solicitacao de ancoragem no terminal
+            break;
+            default: 
+        }
 	}
     
     
    
-    
+    }
 }
