@@ -7,7 +7,7 @@ package entity;
 
 /**
  *
- * @author 
+ * @author Elymar Alves
  */
 public class PassageirosBuffer {
  
