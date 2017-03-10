@@ -80,7 +80,7 @@ public class Control extends Thread {
                         System.out.println("Controle: " + airplane.getPfx() + " Pista liberada, proceda com a decolagem, boa viagem.");
                         System.out.println(airplane.getPfx() + ": Ok, controle. Obrigado.");
                         semaforoDeco.release();
-                        System.out.println("Controle: " + airplane.getPfx() + " Até a próxima!\n");
+                        System.out.println("Controle: " + airplane.getPfx() + " Até a próxima!");
                         try {
                             airplane.sleep(15);
                         } catch (InterruptedException ex) {
