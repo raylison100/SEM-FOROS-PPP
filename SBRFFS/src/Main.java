@@ -54,8 +54,8 @@ public class Main {
         a1.start();
         a2.setIntension(2);
         a2.start();
-        //a2.join();
-        //a1.join();
+        a2.join();
+        a1.join();
         a3.start();
         a4.setIntension(3);
         a4.start();
